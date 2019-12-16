@@ -1,0 +1,183 @@
+openapi: 3.0.0
+info:
+  description: API to handle the required data for the BluthBusters project
+  version: 1.0.0-SNAPSHOT
+  title: BluthBusters API
+  contact:
+    name: Daniel Bravo
+    email: devian369@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: /
+    description: Base server
+tags:
+  - name: movies
+    description: List movie data available
+  - name: customers
+    description: Info customized for each customer
+paths:
+  /movies:
+    get:
+      tags:
+        - movies
+      summary: List all movies in the database
+      operationId: listMovies
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum:
+              - available
+              - all
+            default: available
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 50
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+      responses:
+        200:
+          description: Movies found
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ListResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Movie'
+  /movies/{id}:
+    get:
+      tags:
+        - movies
+      summary: Finds a movie by id
+      operationId: findMovie
+      parameters:
+        - in: path
+          name: id
+          description: Movie id
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: Movie found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+        404:
+          description: Movie not found
+  /customers/history:
+    get:
+      tags:
+        - customers
+      summary: Returns the renting history of a customer
+      operationId: getCustomerHistory
+      responses:
+        200:
+          description: History found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MovieRentalDetail'
+  /customers/history/movies/{movieId}/rented:
+    get:
+      tags:
+        - customers
+      summary: Return data if the customer currently has a copy of the movie
+      operationId: hasMovieCopy
+      parameters:
+        - in: path
+          name: movieId
+          description: Movie id
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: Customer has a copy of the movie
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicRentalDetail'
+        204:
+          description: Customer has no copie of the movie
+components:
+  schemas:
+    ListResponse:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+    MovieMetaData:
+      type: object
+      properties:
+        imdbId:
+          type: string
+        title:
+          type: string
+        genre:
+          type: string
+        year:
+          type: integer
+        director:
+          type: string
+        runtime:
+          type: string
+        poster:
+          type: string
+        description:
+          type: string
+    Movie:
+      type: object
+      properties:
+        id:
+          type: string
+        externalData:
+          $ref: '#/components/schemas/MovieMetaData'
+        trailer:
+          type: string
+        inventory:
+          type: object
+          properties:
+            copies:
+              type: integer
+            available:
+              type: integer
+    BasicRentalDetail:
+      type: object
+      properties:
+        id:
+          type: string
+        movieId:
+          type: string
+        rentedAt:
+          type: string
+          format: date-time
+        rentUntil:
+          type: string
+          format: date
+        returnedAt:
+          type: string
+          format: date-time
+    MovieRentalDetail:
+      allOf:
+        - $ref: '#/components/schemas/BasicRentalDetail'
+        - type: object
+          properties:
+            movie:
+              $ref: '#/components/schemas/MovieMetaData'
