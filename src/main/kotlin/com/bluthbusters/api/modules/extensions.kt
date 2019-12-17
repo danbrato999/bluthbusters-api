@@ -9,6 +9,7 @@ import io.vertx.serviceproxy.ServiceProxyBuilder
 const val API_CONTRACT = "webroot/docs/openapi.yaml"
 const val MOVIES_CONTROLLER = "controllers.movies"
 const val CUSTOMERS_CONTROLLER = "controllers.customers"
+const val MOVIES_DATA_STORE = "services.data.movies"
 
 fun <T> AbstractVerticle.bindService(address: String, clazz: Class<T>, impl: T): MessageConsumer<JsonObject> =
   ServiceBinder(vertx)

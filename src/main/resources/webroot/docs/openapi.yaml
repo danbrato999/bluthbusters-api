@@ -57,6 +57,24 @@ paths:
                         type: array
                         items:
                           $ref: '#/components/schemas/Movie'
+    post:
+      tags:
+        - movies
+      summary: Adds a new movie to the store
+      operationId: addMovie
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MovieForm'
+      responses:
+        201:
+          description: Movie created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdObject'
   /movies/{id}:
     get:
       tags:
@@ -123,6 +141,11 @@ components:
       properties:
         totalCount:
           type: integer
+    IdObject:
+      type: object
+      properties:
+        id:
+          type: string
     MovieMetaData:
       type: object
       properties:
@@ -142,6 +165,19 @@ components:
           type: string
         description:
           type: string
+    MovieForm:
+      type: object
+      required:
+        - externalData
+        - trailer
+        - copies
+      properties:
+        externalData:
+          $ref: '#/components/schemas/MovieMetaData'
+        trailer:
+          type: string
+        copies:
+          type: integer
     Movie:
       type: object
       properties:

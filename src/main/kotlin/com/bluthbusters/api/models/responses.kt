@@ -1,13 +1,24 @@
 package com.bluthbusters.api.models
 
-data class MovieData(val imdbId: String, val title: String, val genre: String, val year: Int, val director: String,
-                     val runtime: String, val poster: String, val description: String)
+import io.vertx.codegen.annotations.DataObject
+import io.vertx.core.json.JsonArray
+import io.vertx.core.json.JsonObject
+
+@DataObject
+data class IdObject(val id: String) {
+  constructor(json: JsonObject) : this(json.getString("id"))
+  fun toJson() : JsonObject = JsonObject().put("id", id)
+}
+
+@DataObject
+data class PaginatedList(val totalCount: Long = 0, val data: JsonArray = JsonArray()) {
+  constructor(json: JsonObject) : this(json.getLong("totalCount"), json.getJsonArray("data"))
+  fun toJson() : JsonObject = JsonObject.mapFrom(this)
+}
 
 data class Inventory(val copies: Long, val available: Long)
 
-data class Movie(val id: String, val externalData: MovieData, val trailer: String?, val inventory: Inventory)
-
-data class PaginatedList<T>(val totalCount: Long = 0, val data: List<T> = emptyList())
+data class Movie(val id: String, val externalData: MovieData, val trailer: String, val inventory: Inventory)
 
 data class BasicRentalDetail(val id: String, val movieId: String, val rentedAt: String, val rentUntil: String,
                              val returnedAt: String? = null)
