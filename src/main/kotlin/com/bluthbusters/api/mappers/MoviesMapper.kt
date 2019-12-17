@@ -30,4 +30,21 @@ object MoviesMapper {
       }
     )
   }
+
+  fun toUpdatedMovie(form: MovieForm, currentMovie: JsonObject) : JsonObject {
+    val rentedAmount = currentMovie.getJsonObject("inventory").getLong("copies") -
+      currentMovie.getJsonObject("inventory").getLong("available")
+
+    return json {
+      obj(
+        "_id" to currentMovie.getString("id"),
+        "externalData" to form.externalData.toJson(),
+        "trailer" to form.trailer,
+        "inventory" to obj(
+          "copies" to form.copies,
+          "rented" to rentedAmount
+        )
+      )
+    }
+  }
 }

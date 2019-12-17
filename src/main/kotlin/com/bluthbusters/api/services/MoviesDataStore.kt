@@ -13,4 +13,5 @@ interface MoviesDataStore {
   fun add(form: MovieForm, handler: Handler<AsyncResult<IdObject>>)
   fun list(status: String, limit: Long, page: Long, handler: Handler<AsyncResult<PaginatedList>>)
   fun find(id: String, handler: Handler<AsyncResult<JsonObject?>>)
+  fun update(id: String, form: MovieForm, handler: Handler<AsyncResult<Long?>>)
 }

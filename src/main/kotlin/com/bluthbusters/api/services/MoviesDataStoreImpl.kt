@@ -12,6 +12,7 @@ import io.vertx.core.Handler
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.mongo.MongoClient
+import io.vertx.kotlin.core.json.json
 import io.vertx.kotlin.ext.mongo.findOptionsOf
 
 class MoviesDataStoreImpl(private val dbClient: MongoClient) : MoviesDataStore {
@@ -48,5 +49,28 @@ class MoviesDataStoreImpl(private val dbClient: MongoClient) : MoviesDataStore {
     dbClient.findWithOptions(moviesCollection, query, findOptionsOf(limit = 1)) { ar ->
       handler.handle(ar.map { it.firstOrNull()?.let(MoviesMapper::fromMovieDocument) })
     }
+  }
+
+  override fun update(id: String, form: MovieForm, handler: Handler<AsyncResult<Long?>>) {
+    Future.future<JsonObject?> { find(id, it) }
+      .compose<Long> { movie ->
+        if (movie == null)
+          Future.succeededFuture(null)
+        else
+          diffUpdate(form, movie)
+      }.setHandler(handler)
+  }
+
+  private fun diffUpdate(form: MovieForm, currentMovie: JsonObject) : Future<Long> {
+    val rentedAmount = currentMovie.getJsonObject("inventory").getLong("copies") -
+      currentMovie.getJsonObject("inventory").getLong("available")
+
+    // If new amount less than the current copies rented return error
+    if (form.copies < rentedAmount)
+      return Future.succeededFuture(0L)
+
+    return Future.future<String> {
+      dbClient.save(moviesCollection, MoviesMapper.toUpdatedMovie(form, currentMovie), it)
+    }.map(1L)
   }
 }

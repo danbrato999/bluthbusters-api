@@ -45,6 +45,6 @@ class OpenApiServer : AbstractVerticle() {
 
   private fun corsHandler() = CorsHandler.create(config().getString("cors"))
     .allowCredentials(true)
-    .allowedMethods(setOf(HttpMethod.GET, HttpMethod.POST, HttpMethod.DELETE))
+    .allowedMethods(setOf(HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT, HttpMethod.DELETE))
     .allowedHeaders(setOf("authorization", "origin", "Content-Type", "accept", "Access-Control-Allow-Origin"))
 }

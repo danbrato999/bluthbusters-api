@@ -97,6 +97,31 @@ paths:
                 $ref: '#/components/schemas/Movie'
         404:
           description: Movie not found
+    put:
+      tags:
+        - movies
+      summary: Updates an existing movie
+      operationId: updateMovie
+      parameters:
+        - in: path
+          name: id
+          description: Movie id
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MovieForm'
+      responses:
+        200:
+          description: Movie updated
+        400:
+          description: Movie can't be updated with the specified parameters
+        404:
+          description: Movie not found
   /movie-rentals/{movieId}:
     post:
       tags:
@@ -199,6 +224,15 @@ components:
           type: string
     MovieMetaData:
       type: object
+      required:
+        - imdbId
+        - title
+        - genre
+        - year
+        - director
+        - runtime
+        - poster
+        - description
       properties:
         imdbId:
           type: string
@@ -229,6 +263,7 @@ components:
           type: string
         copies:
           type: integer
+          minimum: 1
     Movie:
       type: object
       properties:
