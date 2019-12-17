@@ -15,8 +15,8 @@ servers:
 tags:
   - name: movies
     description: List movie data available
-  - name: customers
-    description: Info customized for each customer
+  - name: movie-rentals
+    description: Info related to renting of movies
 paths:
   /movies:
     get:
@@ -97,25 +97,61 @@ paths:
                 $ref: '#/components/schemas/Movie'
         404:
           description: Movie not found
-  /customers/history:
-    get:
+  /movie-rentals/{movieId}:
+    post:
       tags:
-        - customers
-      summary: Returns the renting history of a customer
-      operationId: getCustomerHistory
+        - movie-rentals
+      summary: Rent a movie for a customer
+      operationId: rentMovie
+      parameters:
+        - in: path
+          name: movieId
+          description: Movie id
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - rentUntil
+              properties:
+                rentUntil:
+                  type: string
+                  format: date
       responses:
-        200:
-          description: History found
+        201:
+          description: Rent created
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/MovieRentalDetail'
-  /customers/history/movies/{movieId}/rented:
+                $ref: '#/components/schemas/IdObject'
+        400:
+          description: This customer can't rent this movie
+    delete:
+      tags:
+        - movie-rentals
+      summary: Return a movie currently owned
+      operationId: returnMovie
+      parameters:
+        - in: path
+          name: movieId
+          description: Movie id
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: Movie returned
+        400:
+          description: This customer can't return this movie
+  /movie-rentals/{movieId}/rented:
     get:
       tags:
-        - customers
+        - movie-rentals
       summary: Return data if the customer currently has a copy of the movie
       operationId: hasMovieCopy
       parameters:
@@ -134,6 +170,21 @@ paths:
                 $ref: '#/components/schemas/BasicRentalDetail'
         204:
           description: Customer has no copie of the movie
+  /customers/history:
+    get:
+      tags:
+        - movie-rentals
+      summary: Returns the renting history of a customer
+      operationId: getCustomerHistory
+      responses:
+        200:
+          description: History found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MovieRentalDetail'
 components:
   schemas:
     ListResponse:

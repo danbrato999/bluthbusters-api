@@ -1,7 +1,7 @@
 package com.bluthbusters.api.modules
 
-import com.bluthbusters.api.controllers.CustomersController
-import com.bluthbusters.api.controllers.CustomersControllerImpl
+import com.bluthbusters.api.controllers.MovieRentalsController
+import com.bluthbusters.api.controllers.MovieRentalsControllerImpl
 import com.bluthbusters.api.controllers.MoviesController
 import com.bluthbusters.api.controllers.MoviesControllerImpl
 import io.vertx.core.AbstractVerticle
@@ -9,9 +9,9 @@ import io.vertx.core.AbstractVerticle
 class ControllersModule : AbstractVerticle() {
   override fun start() {
     val moviesController = MoviesControllerImpl(buildProxy(MOVIES_DATA_STORE))
-    val customersController = CustomersControllerImpl()
+    val rentalsController = MovieRentalsControllerImpl(buildProxy(RENTALS_DATA_STORE))
 
     bindService(MOVIES_CONTROLLER, MoviesController::class.java, moviesController)
-    bindService(CUSTOMERS_CONTROLLER, CustomersController::class.java, customersController)
+    bindService(MOVIE_RENTALS_CONTROLLER, MovieRentalsController::class.java, rentalsController)
   }
 }

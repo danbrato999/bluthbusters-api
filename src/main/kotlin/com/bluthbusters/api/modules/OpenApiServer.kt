@@ -8,19 +8,26 @@ import io.vertx.core.http.HttpServer
 import io.vertx.ext.web.api.contract.openapi3.OpenAPI3RouterFactory
 import io.vertx.ext.web.handler.CorsHandler
 import io.vertx.ext.web.handler.StaticHandler
+import org.slf4j.LoggerFactory
 
 class OpenApiServer : AbstractVerticle() {
+  private val logger = LoggerFactory.getLogger(OpenApiServer::class.java)
+
   override fun start(startPromise: Promise<Void>) {
     Future.future<OpenAPI3RouterFactory> {
       OpenAPI3RouterFactory.create(vertx, API_CONTRACT, it)
     }.map { routerFactory ->
       routerFactory.addGlobalHandler(corsHandler())
       routerFactory.mountServiceFromTag("movies", MOVIES_CONTROLLER)
-      routerFactory.mountServiceFromTag("customers", CUSTOMERS_CONTROLLER)
+      routerFactory.mountServiceFromTag("movie-rentals", MOVIE_RENTALS_CONTROLLER)
 
       routerFactory.router
     }.compose { router ->
       router.route("/*").handler(StaticHandler.create())
+      router.errorHandler(500) {
+        logger.error("Unexpected error in the app", it.failure())
+      }
+
       val port: Int = config().getString("port").toInt()
 
       Future.future<HttpServer> {
@@ -38,6 +45,6 @@ class OpenApiServer : AbstractVerticle() {
 
   private fun corsHandler() = CorsHandler.create(config().getString("cors"))
     .allowCredentials(true)
-    .allowedMethods(setOf(HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT))
+    .allowedMethods(setOf(HttpMethod.GET, HttpMethod.POST, HttpMethod.DELETE))
     .allowedHeaders(setOf("authorization", "origin", "Content-Type", "accept", "Access-Control-Allow-Origin"))
 }

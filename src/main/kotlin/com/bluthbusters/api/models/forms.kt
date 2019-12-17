@@ -10,3 +10,11 @@ data class MovieForm(val externalData: MovieData, val trailer: String, val copie
 
   fun toJson() : JsonObject = JsonObject.mapFrom(this)
 }
+
+@DataObject
+data class RentalForm(val movieId: String, val customerId: String, val rentUntil: String) {
+  constructor(json: JsonObject) : this(json.getString("movieId"), json.getString("customerId"),
+    json.getString("rentUntil"))
+
+  fun toJson() : JsonObject = JsonObject.mapFrom(this)
+}

@@ -4,6 +4,7 @@ import com.bluthbusters.api.mappers.MoviesMapper
 import com.bluthbusters.api.models.IdObject
 import com.bluthbusters.api.models.MovieForm
 import com.bluthbusters.api.models.PaginatedList
+import com.bluthbusters.api.services.Collections.moviesCollection
 import io.vertx.core.AsyncResult
 import io.vertx.core.CompositeFuture
 import io.vertx.core.Future
@@ -13,11 +14,9 @@ import io.vertx.core.json.JsonObject
 import io.vertx.ext.mongo.MongoClient
 import io.vertx.kotlin.ext.mongo.findOptionsOf
 
-class MoviesDataStoreImpl(val dbClient: MongoClient) : MoviesDataStore {
-  private val collection = "movies"
-
+class MoviesDataStoreImpl(private val dbClient: MongoClient) : MoviesDataStore {
   override fun add(form: MovieForm, handler: Handler<AsyncResult<IdObject>>) {
-    dbClient.insert(collection, MoviesMapper.toMovieDocument(form)) { ar ->
+    dbClient.insert(moviesCollection, MoviesMapper.toNewMovieDocument(form)) { ar ->
       handler.handle(ar.map { IdObject(it) })
     }
   }
@@ -26,16 +25,16 @@ class MoviesDataStoreImpl(val dbClient: MongoClient) : MoviesDataStore {
     val query = if (status == "all")
       JsonObject()
     else
-      JsonObject().put("inventory.available", JsonObject().put("\$gt", 0))
+      JsonObject().put("\$where","this.inventory.copies > this.inventory.rented")
 
     val pagination = findOptionsOf(limit = limit.toInt(), skip = ((page - 1) * limit).toInt())
 
     val queryFuture = Future.future<List<JsonObject>> {
-      dbClient.findWithOptions(collection, query, pagination, it)
+      dbClient.findWithOptions(moviesCollection, query, pagination, it)
     }.map { JsonArray(it.map(MoviesMapper::fromMovieDocument)) }
 
     val countFuture = Future.future<Long> {
-      dbClient.count(collection, query, it)
+      dbClient.count(moviesCollection, query, it)
     }
 
     CompositeFuture.join(queryFuture, countFuture)
@@ -46,7 +45,7 @@ class MoviesDataStoreImpl(val dbClient: MongoClient) : MoviesDataStore {
   override fun find(id: String, handler: Handler<AsyncResult<JsonObject?>>) {
     val query = JsonObject().put("_id", id)
 
-    dbClient.findWithOptions(collection, query, findOptionsOf(limit = 1)) { ar ->
+    dbClient.findWithOptions(moviesCollection, query, findOptionsOf(limit = 1)) { ar ->
       handler.handle(ar.map { it.firstOrNull()?.let(MoviesMapper::fromMovieDocument) })
     }
   }
