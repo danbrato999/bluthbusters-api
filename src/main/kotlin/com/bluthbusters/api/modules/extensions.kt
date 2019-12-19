@@ -11,6 +11,7 @@ const val MOVIES_CONTROLLER = "controllers.movies"
 const val MOVIE_RENTALS_CONTROLLER = "controllers.movie-rentals"
 const val MOVIES_DATA_STORE = "services.data.movies"
 const val RENTALS_DATA_STORE = "services.data.rentals"
+const val OMDB_API_CLIENT_SERVICE = "services.apis.omdb"
 
 fun <T> AbstractVerticle.bindService(address: String, clazz: Class<T>, impl: T): MessageConsumer<JsonObject> =
   ServiceBinder(vertx)

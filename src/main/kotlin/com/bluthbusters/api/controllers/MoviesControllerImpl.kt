@@ -1,7 +1,9 @@
 package com.bluthbusters.api.controllers
 
+import com.bluthbusters.api.models.MovieDataSearchForm
 import com.bluthbusters.api.models.MovieForm
 import com.bluthbusters.api.services.MoviesDataStore
+import com.bluthbusters.api.services.OmdbApiClient
 import io.vertx.core.AsyncResult
 import io.vertx.core.Future
 import io.vertx.core.Handler
@@ -9,7 +11,10 @@ import io.vertx.core.json.JsonObject
 import io.vertx.ext.web.api.OperationRequest
 import io.vertx.ext.web.api.OperationResponse
 
-class MoviesControllerImpl(private val moviesDataStore: MoviesDataStore) : MoviesController {
+class MoviesControllerImpl(
+  private val moviesDataStore: MoviesDataStore,
+  private val omdbApiClient: OmdbApiClient
+) : MoviesController {
   override fun addMovie(
     body: JsonObject,
     context: OperationRequest,
@@ -74,6 +79,29 @@ class MoviesControllerImpl(private val moviesDataStore: MoviesDataStore) : Movie
               else -> OperationResponse().setStatusCode(200)
           }
         })
+      })
+    } catch (e: Exception) {
+      resultHandler.handle(Future.failedFuture(e))
+    }
+  }
+
+  override fun searchMovieExternalData(
+    body: JsonObject,
+    context: OperationRequest,
+    resultHandler: Handler<AsyncResult<OperationResponse>>
+  ) {
+    try {
+      val form = MovieDataSearchForm(body)
+      omdbApiClient.searchSingle(form, Handler { ar ->
+        resultHandler.handle(
+          ar.map { data ->
+            if (data == null)
+              OperationResponse()
+                .setStatusCode(404)
+            else
+              OperationResponse.completedWithJson(data)
+          }
+        )
       })
     } catch (e: Exception) {
       resultHandler.handle(Future.failedFuture(e))

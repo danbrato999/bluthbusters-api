@@ -122,6 +122,34 @@ paths:
           description: Movie can't be updated with the specified parameters
         404:
           description: Movie not found
+  /external/omdb/search:
+    post:
+      tags:
+        - movies
+      operationId: searchMovieExternalData
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - byImdbId
+                    - byName
+                value:
+                  type: string
+      responses:
+        200:
+          description: External movie found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieMetaData'
+        404:
+          description: External movie not found
   /movie-rentals/{movieId}:
     post:
       tags:

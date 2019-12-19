@@ -39,6 +39,7 @@ dependencies {
   implementation "io.vertx:vertx-lang-kotlin:$vertxVersion"
   implementation "io.vertx:vertx-config:$vertxVersion"
   implementation "io.vertx:vertx-config-hocon:$vertxVersion"
+  implementation "io.vertx:vertx-web-client:$vertxVersion"
 
   implementation 'io.github.jponge:vertx-boot:1.0.2'
   implementation 'ch.qos.logback:logback-classic:1.2.3'

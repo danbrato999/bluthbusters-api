@@ -18,3 +18,10 @@ data class RentalForm(val movieId: String, val customerId: String, val rentUntil
 
   fun toJson() : JsonObject = JsonObject.mapFrom(this)
 }
+
+@DataObject
+data class MovieDataSearchForm(val type: String, val value: String) {
+  constructor(json: JsonObject) : this(json.getString("type"), json.getString("value"))
+
+  fun toJson() : JsonObject = JsonObject.mapFrom(this)
+}
