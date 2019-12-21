@@ -23,6 +23,15 @@ object RentalsMapper {
     )
   }
 
+  fun fromNewRentalDocument(newId: String, rentalForm: RentalForm) : JsonObject = json {
+    obj(
+      "id" to newId,
+      "movieId" to rentalForm.movieId,
+      "rentedAt" to OffsetDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME),
+      "rentUntil" to rentalForm.rentUntil
+    )
+  }
+
   fun fromRentalDocument(document: JsonObject) : JsonObject {
     val rentedAt: String = document.getJsonObject("rentedAt")
       .getString("\$date")

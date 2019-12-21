@@ -1,7 +1,6 @@
 package com.bluthbusters.api.services
 
 import com.bluthbusters.api.mappers.RentalsMapper
-import com.bluthbusters.api.models.IdObject
 import com.bluthbusters.api.models.RentalForm
 import com.bluthbusters.api.services.Collections.moviesCollection
 import com.bluthbusters.api.services.Collections.rentalsCollection
@@ -19,15 +18,15 @@ import io.vertx.kotlin.core.json.obj
 import io.vertx.kotlin.ext.mongo.findOptionsOf
 
 class RentalsDataStoreImpl(private val dbClient: MongoClient) : RentalsDataStore {
-  override fun add(form: RentalForm, handler: Handler<AsyncResult<IdObject?>>) {
+  override fun add(form: RentalForm, handler: Handler<AsyncResult<JsonObject?>>) {
     canRentMovie(form.customerId, form.movieId)
-      .compose<IdObject?> { canRent ->
+      .compose<JsonObject?> { canRent ->
         if (canRent)
           Future.future<String> {
             dbClient.insert(rentalsCollection, RentalsMapper.toNewRentalDocument(form), it)
           }.compose { rentalId ->
             increaseUnavailableInventory(form.movieId, 1)
-              .map { IdObject(rentalId) }
+              .map(RentalsMapper.fromNewRentalDocument(rentalId, form))
           }
         else
           Future.succeededFuture(null)

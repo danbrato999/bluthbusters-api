@@ -71,15 +71,15 @@ class MoviesControllerImpl(
   ) {
     try {
       val form = MovieForm(body)
-      moviesDataStore.update(id, form, Handler { ar ->
-        resultHandler.handle(ar.map { update ->
+      Future.future<Long?> { moviesDataStore.update(id, form, it) }
+        .compose { update ->
           when (update) {
-              null -> OperationResponse().setStatusCode(404)
-              0L -> OperationResponse().setStatusCode(400)
-              else -> OperationResponse().setStatusCode(200)
+            null -> Future.succeededFuture(OperationResponse().setStatusCode(404))
+            0L -> Future.succeededFuture(OperationResponse().setStatusCode(400))
+            else -> Future.future<JsonObject> { moviesDataStore.find(id, it) }
+              .map { OperationResponse.completedWithJson(it) }
           }
-        })
-      })
+        }.setHandler(resultHandler)
     } catch (e: Exception) {
       resultHandler.handle(Future.failedFuture(e))
     }

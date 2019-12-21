@@ -1,6 +1,5 @@
 package com.bluthbusters.api.services
 
-import com.bluthbusters.api.models.IdObject
 import com.bluthbusters.api.models.RentalForm
 import io.vertx.codegen.annotations.ProxyGen
 import io.vertx.core.AsyncResult
@@ -10,7 +9,7 @@ import io.vertx.core.json.JsonObject
 
 @ProxyGen
 interface RentalsDataStore {
-  fun add(form: RentalForm, handler: Handler<AsyncResult<IdObject?>>)
+  fun add(form: RentalForm, handler: Handler<AsyncResult<JsonObject?>>)
   fun returnMovie(customerId: String, movieId: String, handler: Handler<AsyncResult<Long>>)
   fun list(customerId: String, handler: Handler<AsyncResult<JsonArray>>)
   fun hasCopy(customerId: String, movieId: String, handler: Handler<AsyncResult<JsonObject?>>)

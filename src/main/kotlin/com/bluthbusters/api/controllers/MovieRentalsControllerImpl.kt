@@ -26,7 +26,7 @@ class MovieRentalsControllerImpl(private val rentalsDataStore: RentalsDataStore)
             if (it == null)
               OperationResponse().setStatusCode(400)
             else
-              OperationResponse.completedWithJson(it.toJson()).setStatusCode(201)
+              OperationResponse.completedWithJson(it).setStatusCode(201)
           }
         )
       })
