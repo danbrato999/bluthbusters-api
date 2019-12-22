@@ -17,6 +17,8 @@ tags:
     description: List movie data available
   - name: movie-rentals
     description: Info related to renting of movies
+security:
+  - firebase: []
 paths:
   /movies:
     get:
@@ -243,6 +245,11 @@ paths:
                 items:
                   $ref: '#/components/schemas/MovieRentalDetail'
 components:
+  securitySchemes:
+    firebase:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     ListResponse:
       type: object

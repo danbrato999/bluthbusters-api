@@ -40,6 +40,8 @@ dependencies {
   implementation "io.vertx:vertx-config:$vertxVersion"
   implementation "io.vertx:vertx-config-hocon:$vertxVersion"
   implementation "io.vertx:vertx-web-client:$vertxVersion"
+  implementation "io.vertx:vertx-auth-jwt:$vertxVersion"
+  implementation 'com.auth0:java-jwt:3.8.3'
 
   implementation 'io.github.jponge:vertx-boot:1.0.2'
   implementation 'ch.qos.logback:logback-classic:1.2.3'

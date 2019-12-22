@@ -10,8 +10,6 @@ import io.vertx.ext.web.api.OperationRequest
 import io.vertx.ext.web.api.OperationResponse
 
 class MovieRentalsControllerImpl(private val rentalsDataStore: RentalsDataStore) : MovieRentalsController {
-  private val hardCodedCustomer = "customer00001";
-
   override fun rentMovie(
     movieId: String,
     body: JsonObject,
@@ -19,7 +17,7 @@ class MovieRentalsControllerImpl(private val rentalsDataStore: RentalsDataStore)
     resultHandler: Handler<AsyncResult<OperationResponse>>
   ) {
     try {
-      val form = RentalForm(movieId, hardCodedCustomer, body.getString("rentUntil"))
+      val form = RentalForm(movieId, context.getUserSub(), body.getString("rentUntil"))
       rentalsDataStore.add(form, Handler { ar ->
         resultHandler.handle(
           ar.map {
@@ -40,7 +38,7 @@ class MovieRentalsControllerImpl(private val rentalsDataStore: RentalsDataStore)
     context: OperationRequest,
     resultHandler: Handler<AsyncResult<OperationResponse>>
   ) {
-    rentalsDataStore.returnMovie(hardCodedCustomer, movieId, Handler { ar ->
+    rentalsDataStore.returnMovie(context.getUserSub(), movieId, Handler { ar ->
       resultHandler.handle(
         ar.map { docsUpdated ->
           OperationResponse()
@@ -55,7 +53,7 @@ class MovieRentalsControllerImpl(private val rentalsDataStore: RentalsDataStore)
     context: OperationRequest,
     resultHandler: Handler<AsyncResult<OperationResponse>>
   ) {
-    rentalsDataStore.hasCopy(hardCodedCustomer, movieId, Handler { ar ->
+    rentalsDataStore.hasCopy(context.getUserSub(), movieId, Handler { ar ->
       resultHandler.handle(
         ar.map { currentRent ->
           if (currentRent == null)
@@ -68,8 +66,12 @@ class MovieRentalsControllerImpl(private val rentalsDataStore: RentalsDataStore)
   }
 
   override fun getCustomerHistory(context: OperationRequest, resultHandler: Handler<AsyncResult<OperationResponse>>) {
-    rentalsDataStore.list(hardCodedCustomer, Handler { ar ->
+    rentalsDataStore.list(context.getUserSub(), Handler { ar ->
       resultHandler.handle(ar.map { OperationResponse.completedWithJson(it) })
     })
+  }
+
+  companion object {
+    private fun OperationRequest.getUserSub() : String = this.user.getString("sub")
   }
 }
