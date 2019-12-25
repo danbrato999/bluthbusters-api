@@ -42,10 +42,8 @@ class FirebaseJwtProvider(config: JsonObject, private val webClient: WebClient) 
   private fun withKeyProvider(): Future<RSAKeyProvider> {
     val current = System.currentTimeMillis()
 
-    if (current - provider.createdAt < cacheExpiration) {
-      logger.debug("Using cached provider")
+    if (current - provider.createdAt < cacheExpiration)
       return Future.succeededFuture(provider)
-    }
 
     return Future.future<HttpResponse<Buffer>> {
       webClient.getAbs(keysSource)

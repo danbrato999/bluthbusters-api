@@ -13,6 +13,7 @@ import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.mongo.MongoClient
 import io.vertx.kotlin.core.json.json
+import io.vertx.kotlin.core.json.obj
 import io.vertx.kotlin.ext.mongo.findOptionsOf
 
 class MoviesDataStoreImpl(private val dbClient: MongoClient) : MoviesDataStore {
@@ -22,16 +23,39 @@ class MoviesDataStoreImpl(private val dbClient: MongoClient) : MoviesDataStore {
     }
   }
 
-  override fun list(status: String, limit: Long, page: Long, handler: Handler<AsyncResult<PaginatedList>>) {
-    val query = if (status == "all")
+  override fun list(
+    name: String?,
+    status: String,
+    limit: Long,
+    page: Long,
+    handler: Handler<AsyncResult<PaginatedList>>
+  ) {
+    val statusQuery = if (status == "all")
       JsonObject()
     else
       JsonObject().put("\$where","this.inventory.copies > this.inventory.rented")
 
-    val pagination = findOptionsOf(limit = limit.toInt(), skip = ((page - 1) * limit).toInt())
+    val nameQuery = if (name.isNullOrBlank())
+      JsonObject()
+    else
+      json {
+        obj(
+          "externalData.title" to obj(
+            "\$regex" to name,
+            "\$options" to "i"
+          )
+        )
+      }
+
+    val query = nameQuery.mergeIn(statusQuery)
+    val options = findOptionsOf(
+      limit = limit.toInt(),
+      skip = ((page - 1) * limit).toInt(),
+      sort = JsonObject().put("externalData.title", 1)
+    )
 
     val queryFuture = Future.future<List<JsonObject>> {
-      dbClient.findWithOptions(moviesCollection, query, pagination, it)
+      dbClient.findWithOptions(moviesCollection, query, options, it)
     }.map { JsonArray(it.map(MoviesMapper::fromMovieDocument)) }
 
     val countFuture = Future.future<Long> {

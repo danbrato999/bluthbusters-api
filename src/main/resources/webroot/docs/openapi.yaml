@@ -28,6 +28,11 @@ paths:
       operationId: listMovies
       parameters:
         - in: query
+          name: name
+          schema:
+            type: string
+          required: false
+        - in: query
           name: status
           schema:
             type: string

@@ -37,13 +37,14 @@ class MoviesControllerImpl(
   }
 
   override fun listMovies(
+    name: String?,
     status: String?,
     limit: Long?,
     page: Long?,
     context: OperationRequest,
     resultHandler: Handler<AsyncResult<OperationResponse>>
   ) =
-    moviesDataStore.list(status ?: "all", limit ?: 50, page ?: 1, Handler { ar ->
+    moviesDataStore.list(name, status ?: "all", limit ?: 50, page ?: 1, Handler { ar ->
       resultHandler.handle(
         ar.map {
           OperationResponse.completedWithJson(it.toJson())

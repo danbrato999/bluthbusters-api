@@ -10,7 +10,7 @@ import io.vertx.ext.web.api.generator.WebApiServiceGen
 @WebApiServiceGen
 interface MoviesController {
   fun addMovie(body: JsonObject, context: OperationRequest, resultHandler: Handler<AsyncResult<OperationResponse>>)
-  fun listMovies(status: String?, limit: Long?, page: Long?, context: OperationRequest, resultHandler: Handler<AsyncResult<OperationResponse>>)
+  fun listMovies(name: String?, status: String?, limit: Long?, page: Long?, context: OperationRequest, resultHandler: Handler<AsyncResult<OperationResponse>>)
   fun findMovie(id: String, context: OperationRequest, resultHandler: Handler<AsyncResult<OperationResponse>>)
   fun updateMovie(id: String, body: JsonObject, context: OperationRequest, resultHandler: Handler<AsyncResult<OperationResponse>>)
   fun searchMovieExternalData(body: JsonObject, context: OperationRequest, resultHandler: Handler<AsyncResult<OperationResponse>>)
