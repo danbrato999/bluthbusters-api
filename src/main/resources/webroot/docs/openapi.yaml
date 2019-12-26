@@ -9,9 +9,6 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-servers:
-  - url: /
-    description: Base server
 tags:
   - name: movies
     description: List movie data available
@@ -20,7 +17,7 @@ tags:
 security:
   - firebase: []
 paths:
-  /movies:
+  /api/movies:
     get:
       tags:
         - movies
@@ -82,7 +79,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/IdObject'
-  /movies/{id}:
+  /api/movies/{id}:
     get:
       tags:
         - movies
@@ -133,7 +130,7 @@ paths:
           description: Movie can't be updated with the specified parameters
         404:
           description: Movie not found
-  /external/omdb/search:
+  /api/external/omdb/search:
     post:
       tags:
         - movies
@@ -161,7 +158,7 @@ paths:
                 $ref: '#/components/schemas/MovieMetaData'
         404:
           description: External movie not found
-  /movie-rentals/{movieId}:
+  /api/movie-rentals/{movieId}:
     post:
       tags:
         - movie-rentals
@@ -224,7 +221,7 @@ paths:
           description: Movie returned
         400:
           description: This customer can't return this movie
-  /movie-rentals/{movieId}/rented:
+  /api/movie-rentals/{movieId}/rented:
     get:
       tags:
         - movie-rentals
@@ -246,7 +243,7 @@ paths:
                 $ref: '#/components/schemas/BasicRentalDetail'
         204:
           description: Customer has no copie of the movie
-  /customers/history:
+  /api/customers/history:
     get:
       tags:
         - movie-rentals
@@ -261,7 +258,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/MovieRentalDetail'
-  /customers/rentals/notifications:
+  /api/customers/rentals/notifications:
     get:
       tags:
         - movie-rentals
