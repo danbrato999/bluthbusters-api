@@ -12,12 +12,12 @@ object RentalsMapper {
     obj(
       "movieId" to rentalForm.movieId,
       "customerId" to rentalForm.customerId,
-      "rentedAt" to currentDate(),
+      "rentedAt" to currentDate(rentalForm.timezone),
       "rentUntil" to obj(
-        "\$date" to LocalDate.parse(rentalForm.rentUntil)
-          .atTime(LocalTime.now())
-          .atOffset(ZoneOffset.UTC)
-          .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+        "\$date" to ZonedDateTime.of(
+          LocalDate.parse(rentalForm.rentUntil).atTime(LocalTime.now()),
+          ZoneId.of(rentalForm.timezone)
+        ).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
       )
     )
   }
@@ -26,7 +26,7 @@ object RentalsMapper {
     obj(
       "id" to newId,
       "movieId" to rentalForm.movieId,
-      "rentedAt" to OffsetDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME),
+      "rentedAt" to ZonedDateTime.now(ZoneId.of(rentalForm.timezone)).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME),
       "rentUntil" to rentalForm.rentUntil
     )
   }
@@ -60,6 +60,6 @@ object RentalsMapper {
       .put("movie", movieData)
   }
 
-  fun currentDate() : JsonObject =
-    JsonObject().put("\$date", OffsetDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME))
+  fun currentDate(timezone: String) : JsonObject =
+    JsonObject().put("\$date", ZonedDateTime.now(ZoneId.of(timezone)).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME))
 }

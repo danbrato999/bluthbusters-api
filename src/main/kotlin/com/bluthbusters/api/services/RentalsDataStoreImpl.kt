@@ -33,9 +33,9 @@ class RentalsDataStoreImpl(private val dbClient: MongoClient) : RentalsDataStore
       }.setHandler(handler)
   }
 
-  override fun returnMovie(customerId: String, movieId: String, handler: Handler<AsyncResult<Long>>) {
+  override fun returnMovie(customerId: String, movieId: String, timezone: String, handler: Handler<AsyncResult<Long>>) {
     Future.future<MongoClientUpdateResult> {
-      dbClient.updateCollection(rentalsCollection, find(customerId, movieId), returnUpdate(), it)
+      dbClient.updateCollection(rentalsCollection, find(customerId, movieId), returnUpdate(timezone), it)
     }.compose { result ->
       if (result.docModified > 0)
         increaseUnavailableInventory(movieId, -1)
@@ -66,13 +66,13 @@ class RentalsDataStoreImpl(private val dbClient: MongoClient) : RentalsDataStore
     }
   }
 
-  override fun pendingMoviesCount(customerId: String, handler: Handler<AsyncResult<Long>>) {
+  override fun pendingMoviesCount(customerId: String, timezone: String, handler: Handler<AsyncResult<Long>>) {
     val query = json {
       obj(
         "customerId" to customerId,
         "returnedAt" to null,
         "rentUntil" to obj(
-          "\$lte" to RentalsMapper.currentDate()
+          "\$lte" to RentalsMapper.currentDate(timezone)
         )
       )
     }
@@ -126,10 +126,10 @@ class RentalsDataStoreImpl(private val dbClient: MongoClient) : RentalsDataStore
       )
     }
 
-    private fun returnUpdate() : JsonObject = json {
+    private fun returnUpdate(timezone: String) : JsonObject = json {
       obj(
         "\$set" to obj(
-          "returnedAt" to RentalsMapper.currentDate()
+          "returnedAt" to RentalsMapper.currentDate(timezone)
         )
       )
     }

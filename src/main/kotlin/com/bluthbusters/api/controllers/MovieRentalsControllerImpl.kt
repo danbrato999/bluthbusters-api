@@ -17,7 +17,7 @@ class MovieRentalsControllerImpl(private val rentalsDataStore: RentalsDataStore)
     resultHandler: Handler<AsyncResult<OperationResponse>>
   ) {
     try {
-      val form = RentalForm(movieId, context.getUserSub(), body.getString("rentUntil"))
+      val form = RentalForm(movieId, context.getUserSub(), body.getString("rentUntil"), context.getTimezone())
       rentalsDataStore.add(form, Handler { ar ->
         resultHandler.handle(
           ar.map {
@@ -38,7 +38,7 @@ class MovieRentalsControllerImpl(private val rentalsDataStore: RentalsDataStore)
     context: OperationRequest,
     resultHandler: Handler<AsyncResult<OperationResponse>>
   ) {
-    rentalsDataStore.returnMovie(context.getUserSub(), movieId, Handler { ar ->
+    rentalsDataStore.returnMovie(context.getUserSub(), movieId, context.getTimezone(), Handler { ar ->
       resultHandler.handle(
         ar.map { docsUpdated ->
           OperationResponse()
@@ -75,7 +75,7 @@ class MovieRentalsControllerImpl(private val rentalsDataStore: RentalsDataStore)
     context: OperationRequest,
     resultHandler: Handler<AsyncResult<OperationResponse>>
   ) {
-    rentalsDataStore.pendingMoviesCount(context.getUserSub(), Handler { ar ->
+    rentalsDataStore.pendingMoviesCount(context.getUserSub(), context.getTimezone(), Handler { ar ->
       resultHandler.handle(
         ar.map {
           OperationResponse
@@ -86,6 +86,7 @@ class MovieRentalsControllerImpl(private val rentalsDataStore: RentalsDataStore)
   }
 
   companion object {
+    private fun OperationRequest.getTimezone() : String = this.headers.get("X-Host-Timezone") ?: "UTC"
     private fun OperationRequest.getUserSub() : String = this.user.getString("sub")
   }
 }

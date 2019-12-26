@@ -10,8 +10,8 @@ import io.vertx.core.json.JsonObject
 @ProxyGen
 interface RentalsDataStore {
   fun add(form: RentalForm, handler: Handler<AsyncResult<JsonObject?>>)
-  fun returnMovie(customerId: String, movieId: String, handler: Handler<AsyncResult<Long>>)
+  fun returnMovie(customerId: String, movieId: String, timezone: String, handler: Handler<AsyncResult<Long>>)
   fun list(customerId: String, handler: Handler<AsyncResult<JsonArray>>)
   fun hasCopy(customerId: String, movieId: String, handler: Handler<AsyncResult<JsonObject?>>)
-  fun pendingMoviesCount(customerId: String, handler: Handler<AsyncResult<Long>>)
+  fun pendingMoviesCount(customerId: String, timezone: String, handler: Handler<AsyncResult<Long>>)
 }

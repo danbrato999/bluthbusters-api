@@ -12,9 +12,9 @@ data class MovieForm(val externalData: MovieData, val trailer: String, val copie
 }
 
 @DataObject
-data class RentalForm(val movieId: String, val customerId: String, val rentUntil: String) {
+data class RentalForm(val movieId: String, val customerId: String, val rentUntil: String, val timezone: String) {
   constructor(json: JsonObject) : this(json.getString("movieId"), json.getString("customerId"),
-    json.getString("rentUntil"))
+    json.getString("rentUntil"), json.getString("timezone"))
 
   fun toJson() : JsonObject = JsonObject.mapFrom(this)
 }
