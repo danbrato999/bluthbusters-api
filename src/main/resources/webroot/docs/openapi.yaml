@@ -249,6 +249,22 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/MovieRentalDetail'
+  /customers/rentals/notifications:
+    get:
+      tags:
+        - movie-rentals
+      summary: Returns the amount of delayed movies for a customer
+      operationId: getCustomerRentalsNotifications
+      responses:
+        200:
+          description: Notifications found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pending:
+                    type: integer
 components:
   securitySchemes:
     firebase:

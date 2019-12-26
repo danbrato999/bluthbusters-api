@@ -66,6 +66,20 @@ class RentalsDataStoreImpl(private val dbClient: MongoClient) : RentalsDataStore
     }
   }
 
+  override fun pendingMoviesCount(customerId: String, handler: Handler<AsyncResult<Long>>) {
+    val query = json {
+      obj(
+        "customerId" to customerId,
+        "returnedAt" to null,
+        "rentUntil" to obj(
+          "\$lte" to RentalsMapper.currentDate()
+        )
+      )
+    }
+
+    dbClient.count(rentalsCollection, query, handler)
+  }
+
   private fun canRentMovie(customerId: String, movieId: String) : Future<Boolean> {
     val movieQuery = json {
       obj(

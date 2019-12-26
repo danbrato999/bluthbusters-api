@@ -13,4 +13,5 @@ interface MovieRentalsController {
   fun returnMovie(movieId: String, context: OperationRequest, resultHandler: Handler<AsyncResult<OperationResponse>>)
   fun hasMovieCopy(movieId: String, context: OperationRequest, resultHandler: Handler<AsyncResult<OperationResponse>>)
   fun getCustomerHistory(context: OperationRequest, resultHandler: Handler<AsyncResult<OperationResponse>>)
+  fun getCustomerRentalsNotifications(context: OperationRequest, resultHandler: Handler<AsyncResult<OperationResponse>>)
 }

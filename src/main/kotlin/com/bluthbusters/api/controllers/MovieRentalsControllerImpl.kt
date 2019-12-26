@@ -71,6 +71,20 @@ class MovieRentalsControllerImpl(private val rentalsDataStore: RentalsDataStore)
     })
   }
 
+  override fun getCustomerRentalsNotifications(
+    context: OperationRequest,
+    resultHandler: Handler<AsyncResult<OperationResponse>>
+  ) {
+    rentalsDataStore.pendingMoviesCount(context.getUserSub(), Handler { ar ->
+      resultHandler.handle(
+        ar.map {
+          OperationResponse
+            .completedWithJson(JsonObject().put("pending", it))
+        }
+      )
+    })
+  }
+
   companion object {
     private fun OperationRequest.getUserSub() : String = this.user.getString("sub")
   }

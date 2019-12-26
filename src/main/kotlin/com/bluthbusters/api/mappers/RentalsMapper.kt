@@ -4,9 +4,7 @@ import com.bluthbusters.api.models.RentalForm
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.core.json.json
 import io.vertx.kotlin.core.json.obj
-import java.time.LocalDate
-import java.time.OffsetDateTime
-import java.time.OffsetTime
+import java.time.*
 import java.time.format.DateTimeFormatter
 
 object RentalsMapper {
@@ -17,7 +15,8 @@ object RentalsMapper {
       "rentedAt" to currentDate(),
       "rentUntil" to obj(
         "\$date" to LocalDate.parse(rentalForm.rentUntil)
-          .atTime(OffsetTime.MAX)
+          .atTime(LocalTime.now())
+          .atOffset(ZoneOffset.UTC)
           .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
       )
     )
