@@ -8,7 +8,11 @@ import io.vertx.core.AbstractVerticle
 
 class ControllersModule : AbstractVerticle() {
   override fun start() {
-    val moviesController = MoviesControllerImpl(buildProxy(MOVIES_DATA_STORE), buildProxy(OMDB_API_CLIENT_SERVICE))
+    val moviesController = MoviesControllerImpl(
+      buildProxy(MOVIES_DATA_STORE),
+      buildProxy(OMDB_API_CLIENT_SERVICE),
+      buildProxy(YOUTUBE_API_CLIENT_SERVICE)
+    )
     val rentalsController = MovieRentalsControllerImpl(buildProxy(RENTALS_DATA_STORE))
 
     bindService(MOVIES_CONTROLLER, MoviesController::class.java, moviesController)

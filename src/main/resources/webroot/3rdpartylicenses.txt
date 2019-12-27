@@ -145,6 +145,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
+@angular/material/autocomplete
+
 @angular/material/button
 
 @angular/material/card
@@ -170,8 +172,6 @@ THE SOFTWARE.
 @angular/material/progress-bar
 
 @angular/material/progress-spinner
-
-@angular/material/radio
 
 @angular/material/select
 

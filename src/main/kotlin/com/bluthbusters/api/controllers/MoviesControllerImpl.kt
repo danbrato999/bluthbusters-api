@@ -4,6 +4,7 @@ import com.bluthbusters.api.models.MovieDataSearchForm
 import com.bluthbusters.api.models.MovieForm
 import com.bluthbusters.api.services.MoviesDataStore
 import com.bluthbusters.api.services.OmdbApiClient
+import com.bluthbusters.api.services.YoutubeApiClient
 import io.vertx.core.AsyncResult
 import io.vertx.core.Future
 import io.vertx.core.Handler
@@ -13,7 +14,8 @@ import io.vertx.ext.web.api.OperationResponse
 
 class MoviesControllerImpl(
   private val moviesDataStore: MoviesDataStore,
-  private val omdbApiClient: OmdbApiClient
+  private val omdbApiClient: OmdbApiClient,
+  private val youtubeApiClient: YoutubeApiClient
 ) : MoviesController {
   override fun addMovie(
     body: JsonObject,
@@ -107,5 +109,17 @@ class MoviesControllerImpl(
     } catch (e: Exception) {
       resultHandler.handle(Future.failedFuture(e))
     }
+  }
+
+  override fun searchMovieTrailer(
+    title: String,
+    context: OperationRequest,
+    resultHandler: Handler<AsyncResult<OperationResponse>>
+  ) {
+    youtubeApiClient.searchByTitle(title, Handler { ar ->
+      resultHandler.handle(
+        ar.map { OperationResponse.completedWithJson(it) }
+      )
+    })
   }
 }

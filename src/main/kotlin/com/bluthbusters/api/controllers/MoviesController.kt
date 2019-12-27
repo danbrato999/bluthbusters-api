@@ -14,4 +14,5 @@ interface MoviesController {
   fun findMovie(id: String, context: OperationRequest, resultHandler: Handler<AsyncResult<OperationResponse>>)
   fun updateMovie(id: String, body: JsonObject, context: OperationRequest, resultHandler: Handler<AsyncResult<OperationResponse>>)
   fun searchMovieExternalData(body: JsonObject, context: OperationRequest, resultHandler: Handler<AsyncResult<OperationResponse>>)
+  fun searchMovieTrailer(title: String, context: OperationRequest, resultHandler: Handler<AsyncResult<OperationResponse>>)
 }

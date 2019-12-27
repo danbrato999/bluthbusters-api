@@ -158,6 +158,33 @@ paths:
                 $ref: '#/components/schemas/MovieMetaData'
         404:
           description: External movie not found
+  /api/external/youtube/search:
+    get:
+      tags:
+        - movies
+      operationId: searchMovieTrailer
+      parameters:
+        - in: query
+          name: title
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: Trailers found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    title:
+                      type: string
+                    thumbnail:
+                      type: string
   /api/movie-rentals/{movieId}:
     post:
       tags:

@@ -46,6 +46,7 @@ dependencies {
   implementation 'io.github.jponge:vertx-boot:1.0.2'
   implementation 'ch.qos.logback:logback-classic:1.2.3'
   implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.+'
+  implementation 'org.apache.commons:commons-text:1.8'
 
   testImplementation "io.vertx:vertx-junit5:$vertxVersion"
   testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitJupiterEngineVersion"
