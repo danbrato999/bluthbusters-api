@@ -1,29 +1,104 @@
 {
-  "ngxauthfirebaseui": {
-    "signInTabText": "Registrarse",
-    "signInCardTitleText": "Iniciando sesión",
-    "loginButtonText": "Iniciar sesión",
-    "forgotPasswordButtonText": "Se te olvidó tu contraseña ?",
-    "nameText": "Nombre",
-    "nameErrorRequiredText": "Se requiere el nombre",
-    "nameErrorMinLengthText": "¡El nombre es demasiado corto!",
-    "nameErrorMaxLengthText": "¡El nombre es muy largo!",
-    "emailText": "Email",
-    "emailErrorRequiredText": "Correo electronico es requerido",
-    "emailErrorPatternText": "Por favor, introduce una dirección de correo electrónico válida",
-    "passwordText": "Contraseña",
-    "passwordErrorRequiredText": "se requiere contraseña",
-    "registerTabText": "Registro",
-    "registerCardTitleText": "Registro",
-    "registerButtonText": "Registro",
-    "guestButtonText": "continua como invitado",
-    "resetPasswordTabText": "Restablecer la dirección de correo electrónico a la contraseña",
-    "resetPasswordInputText": "Restablecer la dirección de correo electrónico a la contraseña",
-    "resetPasswordErrorRequiredText": "Se requiere un correo electrónico para restablecer la contraseña!",
-    "resetPasswordErrorPatternText": "Por favor, introduce una dirección de correo electrónico válida",
-    "resetPasswordActionButtonText": "Reiniciar",
-    "resetPasswordInstructionsText": "Restablecimiento solicitado. Revise sus instrucciones de correo electrónico.",
-    "emailConfirmationTitle": "¡Confirme su dirección de correo electrónico!",
-    "emailConfirmationText": "Se le ha enviado un correo electrónico de confirmación.\n   Revise su bandeja de entrada y haga clic en el enlace \"Confirmar mi correo electrónico\" para confirmar su dirección de correo electrónico."
-  }
+    "login" : {
+        "title": "Bienvenido a BluthBusters",
+        "subtitle": "Tu lugar favorito para alquilar películas online"
+    },
+    "ngxauthfirebaseui": {
+        "signInTabText": "Ingresar",
+        "signInCardTitleText": "Iniciando sesión",
+        "loginButtonText": "Iniciar sesión",
+        "forgotPasswordButtonText": "Se te olvidó tu contraseña ?",
+        "nameText": "Nombre",
+        "nameErrorRequiredText": "Se requiere el nombre",
+        "nameErrorMinLengthText": "¡El nombre es demasiado corto!",
+        "nameErrorMaxLengthText": "¡El nombre es muy largo!",
+        "emailText": "Email",
+        "emailErrorRequiredText": "Correo electronico es requerido",
+        "emailErrorPatternText": "Por favor, introduce una dirección de correo electrónico válida",
+        "passwordText": "Contraseña",
+        "passwordErrorRequiredText": "Se requiere contraseña",
+        "registerTabText": "Registro",
+        "registerCardTitleText": "Registro",
+        "registerButtonText": "Registro",
+        "guestButtonText": "Continua como invitado",
+        "resetPasswordTabText": "Restablecer la dirección de correo electrónico a la contraseña",
+        "resetPasswordInputText": "Restablecer la dirección de correo electrónico a la contraseña",
+        "resetPasswordErrorRequiredText": "Se requiere un correo electrónico para restablecer la contraseña!",
+        "resetPasswordErrorPatternText": "Por favor, introduce una dirección de correo electrónico válida",
+        "resetPasswordActionButtonText": "Reiniciar",
+        "resetPasswordInstructionsText": "Restablecimiento solicitado. Revise sus instrucciones de correo electrónico.",
+        "emailConfirmationTitle": "¡Confirme su dirección de correo electrónico!",
+        "emailConfirmationText": "Se le ha enviado un correo electrónico de confirmación.\n   Revise su bandeja de entrada y haga clic en el enlace \"Confirmar mi correo electrónico\" para confirmar su dirección de correo electrónico."
+    },
+    "movie_list": {
+        "empty_title": "Lo sentimos, nos quedamos sin películas",
+        "empty_subtitle": "Al parecer, no tenemos películas disponibles en este momento. Si quieres, puedes agregar una nueva",
+        "add": "Agregar",
+        "search": "Buscar",
+        "details": "Detalles",
+        "items_per_page": "Límite",
+        "next_page": "Siguiente",
+        "previous_page": "Anterior"
+    },
+    "movie_details": {
+        "available_copies": "Copias disponibles: {{ copies }}",
+        "rent_now": "Alquila ya",
+        "go_back": "Regresar",
+        "edit": "Editar"
+    },
+    "movie": {
+        "title": "Título",
+        "poster": "Imagen",
+        "director": "Director",
+        "genre": "Género",
+        "year": "Año",
+        "duration": "Duración",
+        "plot": "Trama",
+        "copies": "Copias"
+    },
+    "movie_form": {
+        "add_title": "Agregar nueva película",
+        "update_title": "Actualizar {{ value }}",
+        "poster_title": "Poster principal",
+        "trailer_title": "Selección de trailer",
+        "details_title": "Información adicional",
+        "next": "Siguiente",
+        "go_back": "Regresar",
+        "save": "Guardar",
+        "add": "Agregar"
+    },
+    "rental_form": {
+        "title": "Alquilar {{ value }}",
+        "reminder": "Puedes alquilar {{ value }} por los próximos 20 días!!!",
+        "until": "Alquilar hasta",
+        "choose_date": "Fecha",
+        "rent": "Alquilar",
+        "cancel": "Cancelar"
+    },
+    "rental_history": {
+        "rented_at": "Alquilada",
+        "returned_at": "Regresada",
+        "deadline": "Fecha límite",
+        "empty_title": "No tienes películas en tu historial",
+        "rent_now": "Alquila ya"
+    },
+    "validations": {
+        "required": "Este campo es obligatorio",
+        "movie_year": "Debe ser un año entre 1888 y el presente",
+        "copies": "Debe ser mayor a 0"
+    },
+    "errors": {
+        "unexpected_error": "Error inesperado en la aplicación. Intenta más tarde",
+        "cant_rent_movie": "No puedes alquilar esta película. Asegúrate que está disponible y no la tienes ya",
+        "movie_not_found": "Película no encontrada",
+        "external_movie_not_found": "La película no ha sido encontrada en la base de datos externa"
+    },
+    "movie_title": "Título de la película",
+    "return_movie": "Retornar película",
+    "youtube_search": "Buscar en YouTube",
+    "confirmation": "Estás seguro?",
+    "yes": "Sí",
+    "no": "No",
+    "loading": "Cargando...",
+    "dismiss": "Ignorar"
 }

@@ -1,29 +1,104 @@
 {
-  "ngxauthfirebaseui": {
-    "signInTabText": "Sign in",
-    "signInCardTitleText": "Signing in",
-    "loginButtonText": "Log in",
-    "forgotPasswordButtonText": "Forgot Password ?",
-    "nameText": "Name",
-    "nameErrorRequiredText": "Name is required",
-    "nameErrorMinLengthText": "The name is too short!",
-    "nameErrorMaxLengthText": "The name is too long!",
-    "emailText": "E-mail",
-    "emailErrorRequiredText": "E-mail is required",
-    "emailErrorPatternText": "Please enter a valid e-mail address",
-    "passwordText": "Password",
-    "passwordErrorRequiredText": "Password is required",
-    "registerTabText": "Register",
-    "registerCardTitleText": "Registration",
-    "registerButtonText": "Register",
-    "guestButtonText": "continue as guest",
-    "resetPasswordTabText": "Reset e-mail address to password",
-    "resetPasswordInputText": "Reset e-mail address to password",
-    "resetPasswordErrorRequiredText": "E-mail is required to reset the password!",
-    "resetPasswordErrorPatternText": "Please enter a valid e-mail address",
-    "resetPasswordActionButtonText": "Reset",
-    "resetPasswordInstructionsText": "Reset requested. Check your e-mail instructions.",
-    "emailConfirmationTitle": "Confirm your e-mail address!",
-    "emailConfirmationText": "A confirmation e-mail has been sent to you.\n  Check your inbox and click on the link \"Confirm my e-mail\" to confirm your e-mail address."
-  }
+    "login" : {
+        "title": "Welcome to BluthBusters",
+        "subtitle": "Your number one source for renting physical movies online"
+    },
+    "ngxauthfirebaseui": {
+        "signInTabText": "Sign in",
+        "signInCardTitleText": "Signing in",
+        "loginButtonText": "Log in",
+        "forgotPasswordButtonText": "Forgot Password ?",
+        "nameText": "Name",
+        "nameErrorRequiredText": "Name is required",
+        "nameErrorMinLengthText": "The name is too short!",
+        "nameErrorMaxLengthText": "The name is too long!",
+        "emailText": "E-mail",
+        "emailErrorRequiredText": "E-mail is required",
+        "emailErrorPatternText": "Please enter a valid e-mail address",
+        "passwordText": "Password",
+        "passwordErrorRequiredText": "Password is required",
+        "registerTabText": "Register",
+        "registerCardTitleText": "Registration",
+        "registerButtonText": "Register",
+        "guestButtonText": "continue as guest",
+        "resetPasswordTabText": "Reset e-mail address to password",
+        "resetPasswordInputText": "Reset e-mail address to password",
+        "resetPasswordErrorRequiredText": "E-mail is required to reset the password!",
+        "resetPasswordErrorPatternText": "Please enter a valid e-mail address",
+        "resetPasswordActionButtonText": "Reset",
+        "resetPasswordInstructionsText": "Reset requested. Check your e-mail instructions.",
+        "emailConfirmationTitle": "Confirm your e-mail address!",
+        "emailConfirmationText": "A confirmation e-mail has been sent to you.\n  Check your inbox and click on the link \"Confirm my e-mail\" to confirm your e-mail address."
+    },
+    "movie_list": {
+        "empty_title": "Ups, we're empty now",
+        "empty_subtitle": "There seems to be no movies available for rent now. If you want to, go ahead and add a new movie for rent",
+        "add": "Add movie",
+        "search": "Search movie",
+        "details": "Details",
+        "items_per_page": "Items per page",
+        "next_page": "Next page",
+        "previous_page": "Previous page"
+    },
+    "movie_details": {
+        "available_copies": "Copies available: {{ copies }}",
+        "rent_now": "Rent now",
+        "go_back": "Back",
+        "edit": "Edit"
+    },
+    "movie": {
+        "title": "Title",
+        "poster": "Poster",
+        "director": "Director",
+        "genre": "Genre",
+        "year": "Year",
+        "duration": "Duration",
+        "plot": "Plot",
+        "copies": "Copies"
+    },
+    "movie_form": {
+        "add_title": "Add new movie",
+        "update_title": "Update {{ value }}",
+        "poster_title": "Movie poster",
+        "trailer_title": "Select trailer",
+        "details_title": "Movie details",
+        "next": "Next",
+        "go_back": "Back",
+        "save": "Save",
+        "add": "Add"
+    },
+    "rental_form": {
+        "title": "Rent {{ value }}",
+        "reminder": "You can rent {{ value }} for the next 20 days!!!",
+        "until": "Rent until",
+        "choose_date": "Choose a date",
+        "rent": "Rent",
+        "cancel": "Cancel"
+    },
+    "rental_history": {
+        "rented_at": "Rented at",
+        "returned_at": "Returned at",
+        "deadline": "Deadline",
+        "empty_title": "You have no movies in your history",
+        "rent_now": "Rent now"
+    },
+    "validations": {
+        "required": "This field is required",
+        "movie_year": "Must be a year between 1888 and now",
+        "copies": "Must be greater than 0"
+    },
+    "errors": {
+        "unexpected_error": "Unexpected error in the app. Please try again later",
+        "cant_rent_movie": "You can't rent this movie. Make sure it has enough copies to rent and you don't have a copy now",
+        "movie_not_found": "Requested movie not found",
+        "external_movie_not_found": "The requested movie was not found in the external database"
+    },
+    "movie_title": "Movie title",
+    "return_movie": "Return movie",
+    "youtube_search": "Search on YouTube",
+    "confirmation": "Are you sure?",
+    "yes": "Yes",
+    "no": "No",
+    "loading": "Loading...",
+    "dismiss": "Dismiss"
 }
