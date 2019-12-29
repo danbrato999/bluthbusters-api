@@ -1,31 +1,78 @@
-= Api
+= BluthBusters API
 
 image:https://img.shields.io/badge/vert.x-3.8.4-purple.svg[link="https://vertx.io"]
 
-This application was generated using http://start.vertx.io
+This is an API for a fictional movie rental service. The main purpose of the project was to
+learn Angular by developing a https://github.com/danbrato999/bluthbusters[frontend] to allow logged in users to add/update/rent/return
+movies.
 
-== Building
+The API makes use of MongoDB to store the movie data, Firebase to authenticate users,
+OMDB Api to search for movie data and YouTube Search Api to allow the users to search for
+trailers of the movies.
 
-To launch your tests:
-```
-./gradlew clean test
-```
+The API was developed using https://vertx.io/[Eclipse Vert.x] with Kotlin, using OpenApi 3 for
+the documentation of the API. The document can be found https://github.com/danbrato999/bluthbusters-api/blob/master/src/main/resources/webroot/docs/openapi.yaml[here].
 
-To package your application:
-```
-./gradlew clean assemble
-```
+To be able to run this API locally, you need to set the following environment variables:
 
-To run your application:
+* *MONGODB_URI* -> url of the mongodb instance the api will connect to
+* *OMBD_API_KEY* -> Api key used to query the OMDB API
+* *YOUTUBE_API_KEY* -> Api key to use the Youtube search API
+
+Then, you can run the server by running:
 ```
 ./gradlew clean run
 ```
 
-== Help
+The easiest way to run the server locally would be by using docker. Here is an example compose file
+to get you up to speed:
 
-* https://vertx.io/docs/[Vert.x Documentation]
-* https://stackoverflow.com/questions/tagged/vert.x?sort=newest&pageSize=15[Vert.x Stack Overflow]
-* https://groups.google.com/forum/?fromgroups#!forum/vertx[Vert.x User Group]
-* https://gitter.im/eclipse-vertx/vertx-users[Vert.x Gitter]
+[source]
+----
+version: '3.1'
 
+services:
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: bbusters
+      MONGO_INITDB_ROOT_PASSWORD: securepassword
+    ports:
+      - '27017-27019:27017-27019'
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 10001:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: bbusters
+      ME_CONFIG_MONGODB_ADMINPASSWORD: securepassword
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    restart: always
+    ports:
+      - 10002:8080
+  bb-api:
+    image: 'danbrato999/bluthbusters-api:v2'
+    restart: always
+    ports:
+      - 10003:9900
+    environment:
+      MONGODB_URI: mongodb://bbusters:securepassword@localhost:27017
+      OMDB_API_KEY: <<YOUR OMDB KEY>>
+      YOUTUBE_API_KEY: <<YOUR YOUTUBE KEY>>
+----
 
+This compose sets up the MongoDB, and adds a couple of utility services. Here is the complete list
+
+* MongoDB instance running on ports 27017 to 27019
+* MongoDB Web UI running on port 10001
+* Swagger UI running on port 10002 (You can use this to visualize the endpoints available in the API)
+* BluthBusters API running on port 10003
+
+While this repository is mainly focused on the API side, the frontend assets are also added in the project,
+to simplify deployment. You can find a live version of the server in https://bluthbusters.herokuapp.com/.
+The server is hosted in a free Heroku dyno, so it might take a couple of seconds to load the first time.
+
+This project is a work in progress.

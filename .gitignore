@@ -185,3 +185,6 @@ nbdist/
 !.vscode/extensions.json
 
 build/
+
+## Compose Files ##
+docker-compose.yml
